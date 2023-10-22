@@ -1,8 +1,7 @@
 use adw::glib::subclass::InitializingObject;
 use adw::subclass::prelude::ObjectSubclass;
-use adw::prelude::*;
 use adw::subclass::prelude::*;
-use gtk::{glib, CompositeTemplate, Grid};
+use gtk::{glib, CompositeTemplate};
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/shiishiji/integration1/window.ui")]
