@@ -35,14 +35,14 @@ impl From<Vec<CsvLaptop>> for Laptops {
     fn from(value: Vec<CsvLaptop>) -> Self {
         let vec = value.into_iter().map(|x| Laptop::from(x)).collect();
 
-        Laptops { laptop: vec }
+        Laptops { laptops: vec }
     }
 }
 
 impl From<XmlLaptops> for Laptops {
     fn from(value: XmlLaptops) -> Self {
         Laptops {
-            laptop: value.laptop.into_iter().map(Laptop::from).collect(),
+            laptops: value.laptop.into_iter().map(Laptop::from).collect(),
         }
     }
 }

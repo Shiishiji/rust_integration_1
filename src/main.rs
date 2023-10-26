@@ -1,13 +1,14 @@
-mod storage;
-mod window;
-
-use crate::storage::Storage;
 use crate::window::Window;
 use adw::gdk::Display;
 use adw::gio;
 use adw::prelude::*;
 use adw::{glib, Application};
 use gtk::CssProvider;
+
+mod laptop_object;
+mod laptop_row;
+mod storage;
+mod window;
 
 static APP_ID: &str = "org.shiishiji.Integration1";
 
@@ -18,19 +19,6 @@ fn main() -> glib::ExitCode {
 
     app.connect_startup(|_| load_css());
     app.connect_activate(build_ui);
-
-    let s = Storage::new();
-    let laptops_from_xml = s.load_from_xml();
-    let laptops_from_csv = s.load_from_txt();
-
-    println!(
-        "Laptops from XML:\n{:?}",
-        laptops_from_xml.laptop.into_iter().count()
-    );
-    println!(
-        "Laptops from CSV:\n{:?}",
-        laptops_from_csv.laptop.into_iter().count()
-    );
 
     // Run the application
     app.run()

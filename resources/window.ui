@@ -2,6 +2,8 @@
 <interface>
     <template class="AppWindow" parent="GtkApplicationWindow">
         <property name="title">Integracja systemów - Damian Szopiński</property>
+        <property name="default-width">1000</property>
+        <property name="default-height">600</property>
         <child>
             <object class="GtkBox">
                 <property name="orientation">vertical</property>
@@ -15,13 +17,15 @@
                         <property name="orientation">horizontal</property>
                         <child>
                             <object class="GtkButton">
+                                <signal name="clicked" handler="handle_load_txt_data" swapped="true"/>
                                 <property name="label">Wczytaj dane z TXT</property>
                                 <property name="margin-start">12</property>
                                 <property name="margin-end">12</property>
                             </object>
                         </child>
                         <child>
-                            <object class="GtkButton">
+                            <object class="GtkButton" id="btn_read_xml">
+                                <signal name="clicked" handler="handle_load_xml_data" swapped="true"/>
                                 <property name="label">Wczytaj dane z XML</property>
                                 <property name="margin-start">12</property>
                                 <property name="margin-end">12</property>
@@ -29,6 +33,7 @@
                         </child>
                         <child>
                             <object class="GtkButton">
+                                <signal name="clicked" handler="handle_save_txt_data" swapped="true"/>
                                 <property name="label">Zapisz dane do TXT</property>
                                 <property name="margin-start">12</property>
                                 <property name="margin-end">12</property>
@@ -36,6 +41,7 @@
                         </child>
                         <child>
                             <object class="GtkButton">
+                                <signal name="clicked" handler="handle_save_xml_data" swapped="true"/>
                                 <property name="label">Zapisz dane do XML</property>
                                 <property name="margin-start">12</property>
                                 <property name="margin-end">12</property>
@@ -45,18 +51,14 @@
                 </child>
                 <child>
                     <object class="GtkScrolledWindow">
-                        <property name="vexpand">True</property>
-                        <property name="hscrollbar-policy">never</property>
-                        <property name="min-content-height">420</property>
-                        <property name="child">
-                            <object class="AdwClamp">
-                                <property name="child">
-                                    <object class="GtkGrid">
-
-                                    </object>
-                                </property>
+                        <property name="vexpand">true</property>
+                        <child>
+                            <object class="GtkFlowBox" id="list">
+                                <property name="max-children-per-line">1</property>
+                                <property name="selection-mode">GTK_SELECTION_SINGLE</property>
+                                <property name="valign">start</property>
                             </object>
-                        </property>
+                        </child>
                     </object>
                 </child>
             </object>

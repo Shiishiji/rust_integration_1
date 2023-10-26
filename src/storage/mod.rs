@@ -1,5 +1,5 @@
 mod imp;
-mod models;
+pub mod models;
 
 pub struct Storage {
     source_txt_file_path: String,
