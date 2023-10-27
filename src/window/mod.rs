@@ -59,7 +59,9 @@ impl Window {
                 row.append(&Label::new(Some(
                     &laptop.processor_name().unwrap_or("".to_string()),
                 )));
-                row.append(&Label::new(Some(&laptop.ram().unwrap_or("".to_string()))));
+                row.append(&Label::new(Some(
+                    &laptop.ram().unwrap_or("".to_string())
+                )));
                 row.append(&Label::new(Some(
                     &laptop.disc_storage().unwrap_or("".to_string()),
                 )));

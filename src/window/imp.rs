@@ -37,10 +37,11 @@ impl Window {
     // implement button handlers here
     #[template_callback]
     fn handle_load_txt_data(&self, _button: &Button) {
-        println!("Tried loading from txt");
-        let s = Storage::new();
-        let laptops_from_csv = s.load_from_txt();
+        println!("Loading data from txt.");
+        let storage = Storage::new();
+        let laptops_from_csv = storage.load_from_txt();
 
+        let mut i: i32 = 0;
         for laptop in laptops_from_csv.laptops {
             let laptop_obj = LaptopObject::new(laptop);
 
@@ -49,12 +50,31 @@ impl Window {
                 .clone()
                 .expect("Couldn't get reference to laptops")
                 .append(&laptop_obj);
+            i += 1;
         }
+
+        println!("Loaded {} records.", i);
     }
 
     #[template_callback]
     fn handle_load_xml_data(&self, _button: &Button) {
-        println!("Tried loading from xml");
+        println!("Loading data from xml.");
+        let storage = Storage::new();
+        let laptops_from_csv = storage.load_from_xml();
+
+        let mut i: i32 = 0;
+        for laptop in laptops_from_csv.laptops {
+            let laptop_obj = LaptopObject::new(laptop);
+
+            self.laptops
+                .borrow()
+                .clone()
+                .expect("Couldn't get reference to laptops")
+                .append(&laptop_obj);
+            i += 1;
+        }
+
+        println!("Loaded {} records.", i);
     }
 
     #[template_callback]
