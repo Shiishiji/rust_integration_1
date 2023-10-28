@@ -4,6 +4,7 @@ use adw::gio;
 use adw::glib::subclass::InitializingObject;
 use adw::subclass::prelude::ObjectSubclass;
 use adw::subclass::prelude::*;
+use gtk::prelude::Cast;
 use gtk::{glib, template_callbacks, Button, CompositeTemplate, FlowBox};
 use std::cell::RefCell;
 

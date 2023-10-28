@@ -1,0 +1,22 @@
+button {
+}
+
+flowbox flowboxchild label {
+    min-height: 30px;
+    padding: 10px;
+}
+
+flowbox label {
+    border-top-color: rgb(128, 128, 128);
+    border-left-color: rgb(128, 128, 128);
+    border-right-color: rgb(128, 128, 128);
+    border-bottom-color: rgb(128, 128, 128);
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+}

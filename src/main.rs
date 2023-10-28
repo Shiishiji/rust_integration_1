@@ -6,7 +6,6 @@ use adw::{glib, Application};
 use gtk::CssProvider;
 
 mod laptop_object;
-mod laptop_row;
 mod storage;
 mod window;
 

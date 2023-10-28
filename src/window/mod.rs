@@ -5,7 +5,7 @@ use adw::subclass::prelude::ObjectSubclassIsExt;
 use adw::{gio, glib, Application};
 use glib::Object;
 use gtk::prelude::*;
-use gtk::{Label, NoSelection, Orientation, Widget};
+use gtk::{EditableLabel, NoSelection, Orientation, Widget};
 
 glib::wrapper! {
     pub struct Window(ObjectSubclass<imp::Window>)
@@ -34,8 +34,10 @@ impl Window {
         let selection_model = NoSelection::new(Some(self.laptops()));
 
         self.imp().list.bind_model(Some(&selection_model), |x| {
-            Widget::from({
+            let widget = Widget::from({
                 let row = gtk::Box::builder()
+                    .spacing(0)
+                    .focusable(false)
                     .homogeneous(true)
                     .orientation(Orientation::Horizontal)
                     .build();
@@ -44,43 +46,45 @@ impl Window {
 
                 // Todo: add header row
                 // Todo: set max size and text wrapping
-                row.append(&Label::new(Some(
+                row.append(&EditableLabel::new(
                     &laptop.manufacturer().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(
                     &laptop.screen_size().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(
                     &laptop.screen_type().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(
                     &laptop.screen_touchscreen().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(
                     &laptop.processor_name().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
-                    &laptop.ram().unwrap_or("".to_string())
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(&laptop.ram().unwrap_or("".to_string())));
+                row.append(&EditableLabel::new(
                     &laptop.disc_storage().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(
                     &laptop.disc_type().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(
                     &laptop.graphiccard_name().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(
                     &laptop.graphiccard_memory().unwrap_or("".to_string()),
-                )));
-                row.append(&Label::new(Some(&laptop.os().unwrap_or("".to_string()))));
-                row.append(&Label::new(Some(
+                ));
+                row.append(&EditableLabel::new(&laptop.os().unwrap_or("".to_string())));
+                row.append(&EditableLabel::new(
                     &laptop.disc_reader().unwrap_or("".to_string()),
-                )));
+                ));
 
                 row
-            })
+            });
+
+            widget.set_focusable(false);
+
+            widget
         });
     }
 }
