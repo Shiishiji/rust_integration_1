@@ -4,16 +4,49 @@ use adw::gio;
 use adw::glib::subclass::InitializingObject;
 use adw::subclass::prelude::ObjectSubclass;
 use adw::subclass::prelude::*;
-use gtk::prelude::Cast;
-use gtk::{glib, template_callbacks, Button, CompositeTemplate, FlowBox};
-use std::cell::RefCell;
+use gtk::{
+    glib, template_callbacks, Button, CompositeTemplate, Label, ListView, SizeGroup, SizeGroupMode,
+};
+use std::cell::{Cell, RefCell};
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/shiishiji/integration1/window.ui")]
 pub struct Window {
     #[template_child]
-    pub list: TemplateChild<FlowBox>,
+    pub manufacturer_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub screen_size_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub screen_type_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub screen_touchscreen_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub processor_name_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub processor_physical_cores_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub processor_clock_speed_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub ram_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub disc_storage_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub disc_type_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub graphiccard_name_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub graphiccard_memory_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub os_header_label: TemplateChild<Label>,
+    #[template_child]
+    pub disc_reader_header_label: TemplateChild<Label>,
+
+    #[template_child]
+    pub list: TemplateChild<ListView>,
+    #[template_child]
+    pub list_header: TemplateChild<gtk::Box>,
     pub laptops: RefCell<Option<gio::ListStore>>,
+    pub size_groups: RefCell<Vec<SizeGroup>>,
 }
 
 #[glib::object_subclass]
@@ -95,6 +128,9 @@ impl ObjectImpl for Window {
 
         let obj = self.obj();
         obj.setup_list();
+        obj.setup_size_groups();
+        obj.setup_callbacks();
+        obj.setup_factory();
     }
 }
 

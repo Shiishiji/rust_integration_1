@@ -1,22 +1,61 @@
-button {
-}
-
-flowbox flowboxchild label {
-    min-height: 30px;
+listview > row > box > editablelabel, /* table with data */
+box > box > label /* table header */
+{
+    border: 1px solid @borders;
     padding: 10px;
 }
+#manufacturer_label {
+    /*min-width: 10px;*/
+}
 
-flowbox label {
-    border-top-color: rgb(128, 128, 128);
-    border-left-color: rgb(128, 128, 128);
-    border-right-color: rgb(128, 128, 128);
-    border-bottom-color: rgb(128, 128, 128);
-    border-bottom-style: solid;
-    border-top-style: solid;
-    border-left-style: solid;
-    border-right-style: solid;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
-    border-left-width: 1px;
-    border-right-width: 1px;
+#screen_size_label {
+    /*min-width: 10px;*/
+}
+
+#screen_type_label {
+    /*min-width: 10px;*/
+}
+
+#screen_touchscreen_label {
+    /*min-width: 10px;*/
+}
+
+#processor_name_label {
+    /*min-width: 10px;*/
+}
+
+#processor_physical_cores_label {
+    /*min-width: 10px;*/
+}
+
+#processor_clock_speed_label {
+    /*min-width: 10px;*/
+}
+
+#ram_label {
+    /*min-width: 10px;*/
+}
+
+#disc_storage_label {
+    /*min-width: 10px;*/
+}
+
+#disc_type_label {
+    /*min-width: 10px;*/
+}
+
+#graphiccard_name_label {
+    /*min-width: 10px;*/
+}
+
+#graphiccard_memory_label {
+    /*min-width: 10px;*/
+}
+
+#os_label {
+    /*min-width: 10px;*/
+}
+
+#disc_reader_label {
+    /*min-width: 10px;*/
 }

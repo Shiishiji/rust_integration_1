@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<interface>
+    <template class="LaptopRow" parent="GtkBox">
+        <property name="can-focus">false</property>
+        <property name="valign">center</property>
+        <child>
+            <object class="GtkEditableLabel" id="manufacturer_label">
+                <property name="name">manufacturer_label</property>
+                <property name="width-request">30</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="screen_size_label">
+                <property name="name">screen_size_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="screen_type_label">
+                <property name="name">screen_type_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="screen_touchscreen_label">
+                <property name="name">screen_touchscreen_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="processor_name_label">
+                <property name="name">processor_name_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="processor_physical_cores_label">
+                <property name="name">processor_physical_cores_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="processor_clock_speed_label">
+                <property name="name">processor_clock_speed_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="ram_label">
+                <property name="name">ram_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="disc_storage_label">
+                <property name="name">disc_storage_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="disc_type_label">
+                <property name="name">disc_type_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="graphiccard_name_label">
+                <property name="name">graphiccard_name_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="graphiccard_memory_label">
+                <property name="name">graphiccard_memory_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="os_label">
+                <property name="name">os_label</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEditableLabel" id="disc_reader_label">
+                <property name="name">disc_reader_label</property>
+            </object>
+        </child>
+    </template>
+</interface>
