@@ -1,4 +1,4 @@
-use crate::storage::models::Laptop;
+use crate::storage::models::{Laptop, Screen};
 use adw::glib;
 use adw::glib::Object;
 
@@ -10,81 +10,62 @@ glib::wrapper! {
 
 impl LaptopObject {
     pub fn new(laptop: Laptop) -> Self {
+        let empty_default = Laptop::with_empty_strings();
+
+        let screen = match laptop.screen.is_some() {
+            true => laptop.screen.expect(""),
+            false => empty_default.screen.expect(""),
+        };
+
+        let processor = match laptop.processor.is_some() {
+            true => laptop.processor.expect(""),
+            false => empty_default.processor.expect(""),
+        };
+
+        let disc = match laptop.disc.is_some() {
+            true => laptop.disc.expect(""),
+            false => empty_default.disc.expect(""),
+        };
+
+        let gpu = match laptop.graphic_card.is_some() {
+            true => laptop.graphic_card.expect(""),
+            false => empty_default.graphic_card.expect(""),
+        };
+
         Object::builder()
             .property(
                 "manufacturer",
-                laptop.manufacturer.unwrap_or_else(|| String::new()),
+                laptop.manufacturer.clone().unwrap_or(String::new()),
             )
-            .property(
-                "screen-size",
-                laptop
-                    .screen
-                    .as_ref()
-                    .map(|s| s.size.clone())
-                    .unwrap_or_else(|| Some(String::new())),
-            )
+            .property("screen-size", screen.clone().size.unwrap_or(String::new()))
             .property(
                 "screen-type",
-                laptop
-                    .screen
-                    .as_ref()
-                    .map(|s| s.r#type.clone())
-                    .unwrap_or_else(|| Some(String::new())),
+                screen.clone().r#type.unwrap_or(String::new()),
             )
             .property(
                 "screen-touchscreen",
-                laptop
-                    .screen
-                    .as_ref()
-                    .map(|s| s.touchscreen.clone())
-                    .unwrap_or_else(|| Some(String::new())),
+                screen.clone().touchscreen.unwrap_or(String::new()),
             )
             .property(
                 "processor-name",
-                laptop
-                    .processor
-                    .as_ref()
-                    .map(|p| p.name.clone())
-                    .unwrap_or_else(|| Some(String::new())),
+                processor.clone().name.unwrap_or(String::new()),
             )
-            .property("ram", laptop.ram.unwrap_or_else(|| String::new()))
+            .property("ram", laptop.ram.unwrap_or(String::new()))
             .property(
                 "disc-storage",
-                laptop
-                    .disc
-                    .as_ref()
-                    .map(|d| d.storage.clone())
-                    .unwrap_or_else(|| Some(String::new())),
+                disc.clone().storage.unwrap_or(String::new()),
             )
-            .property(
-                "disc-type",
-                laptop
-                    .disc
-                    .as_ref()
-                    .map(|d| d.r#type.clone())
-                    .unwrap_or_else(|| Some(String::new())),
-            )
+            .property("disc-type", disc.clone().r#type.unwrap_or(String::new()))
             .property(
                 "graphiccard-name",
-                laptop
-                    .graphic_card
-                    .as_ref()
-                    .map(|g| g.name.clone())
-                    .unwrap_or_else(|| Some(String::new())),
+                gpu.clone().name.unwrap_or(String::new()),
             )
             .property(
                 "graphiccard-memory",
-                laptop
-                    .graphic_card
-                    .as_ref()
-                    .map(|g| g.memory.clone())
-                    .unwrap_or_else(|| Some(String::new())),
+                gpu.clone().memory.unwrap_or(String::new()),
             )
-            .property("os", laptop.os.unwrap_or_else(|| String::new()))
-            .property(
-                "disc-reader",
-                laptop.disc_reader.unwrap_or_else(|| String::new()),
-            )
+            .property("os", laptop.os.unwrap_or(String::new()))
+            .property("disc-reader", laptop.disc_reader.unwrap_or(String::new()))
             .build()
 
         // Todo: Add processor properties

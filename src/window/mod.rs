@@ -131,13 +131,10 @@ impl Window {
                 .and_downcast::<LaptopRow>()
                 .expect("Needs to be a `LaptopRow`");
 
-            row.parent()
-                .expect("")
-                .set_focusable(false);
+            row.parent().expect("").set_focusable(false);
 
             row.bind(&object);
         });
-
 
         // Tell factory how to unbind `TaskRow` from `TaskObject`
         factory.connect_unbind(move |_, list_item| {
