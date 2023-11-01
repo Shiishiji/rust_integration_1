@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <interface>
     <template class="LaptopRow" parent="GtkBox">
-        <property name="can-focus">false</property>
         <property name="valign">center</property>
         <child>
             <object class="GtkEditableLabel" id="manufacturer_label">

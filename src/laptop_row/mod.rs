@@ -109,6 +109,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("manufacturer", &manufacturer_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -116,6 +117,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("screen_size", &screen_size_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -129,6 +131,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("screen_touchscreen", &screen_touchscreen_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -136,6 +139,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("processor_name", &processor_name_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -147,6 +151,7 @@ impl LaptopRow {
                     &processor_physical_cores_label,
                     "text",
                 )
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -158,6 +163,7 @@ impl LaptopRow {
                     &processor_clock_speed_label,
                     "text",
                 )
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -165,6 +171,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("ram", &ram_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -172,6 +179,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("disc_storage", &disc_storage_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -185,6 +193,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("graphiccard_name", &graphiccard_name_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -192,6 +201,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("graphiccard_memory", &graphiccard_memory_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -199,6 +209,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("os", &os_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -206,6 +217,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("disc_reader", &disc_reader_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
