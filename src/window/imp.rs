@@ -1,11 +1,16 @@
 use crate::laptop_object::LaptopObject;
+use crate::storage::models::{Laptop, Laptops};
 use crate::storage::Storage;
 use adw::gio;
 use adw::glib::subclass::InitializingObject;
+use adw::prelude::*;
 use adw::subclass::prelude::ObjectSubclass;
 use adw::subclass::prelude::*;
+use gtk::builders::FileChooserDialogBuilder;
+use gtk::ffi::GtkFileDialog;
 use gtk::{
-    glib, template_callbacks, Button, CompositeTemplate, Label, ListView, SizeGroup, SizeGroupMode,
+    glib, template_callbacks, Button, CompositeTemplate, FileChooserAction, FileChooserDialog,
+    Label, ListView, SizeGroup, SizeGroupMode,
 };
 use std::cell::{Cell, RefCell};
 
@@ -119,6 +124,42 @@ impl Window {
     #[template_callback]
     fn handle_save_txt_data(&self, _button: &Button) {
         println!("Tried saving to txt");
+        let desired_file = "saved.csv";
+        let storage = Storage::new();
+
+        let laptops_vec = self.get_laptops();
+
+        println!("Saved {} records to {}", laptops_vec.iter().count(), desired_file);
+
+        storage.save_to_txt(
+            desired_file,
+            Laptops {
+                laptops: laptops_vec,
+            },
+        );
+    }
+
+    fn get_laptops(&self) -> Vec<Laptop> {
+        let laptops = self
+            .laptops
+            .clone()
+            .into_inner()
+            .expect("Cannot get ListStore");
+
+        let mut laptops_vec: Vec<Laptop> = vec![];
+        for laptop_optional in laptops.into_iter() {
+            let laptop: Laptop = Laptop::from(
+                laptop_optional
+                    .expect("??")
+                    .downcast_ref::<LaptopObject>()
+                    .expect("Expected LaptopObject")
+                    .clone(),
+            );
+
+            laptops_vec.push(laptop);
+        }
+
+        laptops_vec
     }
 }
 

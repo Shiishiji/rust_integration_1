@@ -2,7 +2,7 @@ use crate::storage::models::models_csv::*;
 use crate::storage::models::models_xml::*;
 use crate::storage::models::Laptops;
 use crate::storage::Storage;
-use csv::{ReaderBuilder, StringRecord};
+use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::fs::File;
 use std::io::Read;
 
@@ -68,5 +68,23 @@ impl Storage {
             yaserde::de::from_str::<XmlLaptops>(&xml).expect("Unable to deserialize XML.");
 
         Laptops::from(parsed_xml)
+    }
+
+    pub fn save_to_txt(&self, filename: &str, data: Laptops) {
+        let mut writer = WriterBuilder::new()
+            .has_headers(false)
+            .delimiter(b';')
+            .from_path(filename)
+            .expect("Writer error.");
+
+        for laptop in data.laptops {
+            let csv_laptop = CsvLaptop::from(laptop);
+
+            writer
+                .serialize(&csv_laptop)
+                .expect("Error while saving to csv.");
+        }
+
+        writer.flush().expect("Error while flushing.");
     }
 }

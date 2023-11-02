@@ -1,3 +1,4 @@
+use crate::laptop_object::LaptopObject;
 use crate::storage::models::models_csv::*;
 use crate::storage::models::models_xml::*;
 use crate::storage::models::*;
@@ -96,6 +97,58 @@ impl From<XmlGraphicCard> for GraphicCard {
         GraphicCard {
             name: xml_graphic_card.name,
             memory: xml_graphic_card.memory,
+        }
+    }
+}
+
+impl From<LaptopObject> for Laptop {
+    fn from(value: LaptopObject) -> Self {
+        Laptop {
+            manufacturer: Some(value.manufacturer()),
+            screen: Some(Screen {
+                size: Some(value.screen_size()),
+                r#type: Some(value.screen_type()),
+                touchscreen: Some(value.screen_touchscreen()),
+            }),
+            processor: Some(Processor {
+                name: Some(value.processor_name()),
+                physical_cores: Some(value.processor_physical_cores() as u8),
+                clock_speed: Some(value.processor_clock_speed()),
+            }),
+            ram: Some(value.ram()),
+            disc: Some(Disc {
+                storage: Some(value.disc_storage()),
+                r#type: Some(value.disc_type()),
+            }),
+            graphic_card: Some(GraphicCard {
+                name: Some(value.graphiccard_name()),
+                memory: Some(value.graphiccard_memory()),
+            }),
+            os: Some(value.os()),
+            disc_reader: Some(value.disc_reader()),
+        }
+    }
+}
+
+impl From<Laptop> for CsvLaptop {
+    fn from(value: Laptop) -> Self {
+        // Todo: Finish this function.
+        CsvLaptop {
+            manufacturer: value.manufacturer.clone(),
+            matrix_size: value.screen.clone().expect("").size,
+            resolution: None,
+            matrix_type: value.screen.clone().expect("").r#type,
+            touchscreen: value.screen.clone().expect("").touchscreen,
+            cpu: None,
+            physical_cores: None,
+            clock_speed: None,
+            ram: None,
+            disc_size: None,
+            disc_type: None,
+            gpu: None,
+            gram: None,
+            os: None,
+            optical_drive: None,
         }
     }
 }
