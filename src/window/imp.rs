@@ -118,18 +118,24 @@ impl Window {
 
     #[template_callback]
     fn handle_save_xml_data(&self, _button: &Button) {
-        println!("Tried saving to xml");
+        let desired_file = "saved.xml";
+        let storage = Storage::new();
+        let laptops_vec = self.get_laptops();
+
+        storage.save_to_xml(
+            desired_file,
+            Laptops {
+                laptops: laptops_vec,
+            },
+        );
     }
 
     #[template_callback]
     fn handle_save_txt_data(&self, _button: &Button) {
-        println!("Tried saving to txt");
         let desired_file = "saved.csv";
         let storage = Storage::new();
 
         let laptops_vec = self.get_laptops();
-
-        println!("Saved {} records to {}", laptops_vec.iter().count(), desired_file);
 
         storage.save_to_txt(
             desired_file,

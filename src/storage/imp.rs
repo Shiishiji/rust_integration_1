@@ -4,7 +4,7 @@ use crate::storage::models::Laptops;
 use crate::storage::Storage;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
 use std::fs::File;
-use std::io::Read;
+use std::io::{Read, Write};
 
 impl Storage {
     pub fn new() -> Self {
@@ -86,5 +86,23 @@ impl Storage {
         }
 
         writer.flush().expect("Error while flushing.");
+    }
+
+    pub fn save_to_xml(&self, filename: &str, data: Laptops) {
+        let mut file = File::create(filename).expect("Cannot create file.");
+
+        let mut vec_laptops = vec![];
+        for laptop in data.laptops {
+            let xml_laptop = XmlLaptop::from(laptop);
+            vec_laptops.push(xml_laptop);
+        }
+
+        let xml_laptops = XmlLaptops {
+            laptop: vec_laptops,
+        };
+
+        let xml = yaserde::ser::to_string(&xml_laptops).expect("Unable to serialize");
+
+        file.write(xml.as_ref()).expect("Unable to write");
     }
 }
