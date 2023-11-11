@@ -22,6 +22,8 @@ pub struct Window {
     #[template_child]
     pub screen_size_header_label: TemplateChild<Label>,
     #[template_child]
+    pub screen_resolution_header_label: TemplateChild<Label>,
+    #[template_child]
     pub screen_type_header_label: TemplateChild<Label>,
     #[template_child]
     pub screen_touchscreen_header_label: TemplateChild<Label>,
@@ -38,9 +40,9 @@ pub struct Window {
     #[template_child]
     pub disc_type_header_label: TemplateChild<Label>,
     #[template_child]
-    pub graphiccard_name_header_label: TemplateChild<Label>,
+    pub graphic_card_name_header_label: TemplateChild<Label>,
     #[template_child]
-    pub graphiccard_memory_header_label: TemplateChild<Label>,
+    pub graphic_card_memory_header_label: TemplateChild<Label>,
     #[template_child]
     pub os_header_label: TemplateChild<Label>,
     #[template_child]

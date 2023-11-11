@@ -14,6 +14,11 @@
             </object>
         </child>
         <child>
+            <object class="GtkEditableLabel" id="screen_resolution_label">
+                <property name="name">screen_resolution_label</property>
+            </object>
+        </child>
+        <child>
             <object class="GtkEditableLabel" id="screen_type_label">
                 <property name="name">screen_type_label</property>
             </object>
@@ -54,13 +59,13 @@
             </object>
         </child>
         <child>
-            <object class="GtkEditableLabel" id="graphiccard_name_label">
-                <property name="name">graphiccard_name_label</property>
+            <object class="GtkEditableLabel" id="graphic_card_name_label">
+                <property name="name">graphic_card_name_label</property>
             </object>
         </child>
         <child>
-            <object class="GtkEditableLabel" id="graphiccard_memory_label">
-                <property name="name">graphiccard_memory_label</property>
+            <object class="GtkEditableLabel" id="graphic_card_memory_label">
+                <property name="name">graphic_card_memory_label</property>
             </object>
         </child>
         <child>

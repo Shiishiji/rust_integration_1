@@ -46,6 +46,7 @@ impl Window {
             SizeGroup::new(SizeGroupMode::Both),
             SizeGroup::new(SizeGroupMode::Both),
             SizeGroup::new(SizeGroupMode::Both),
+            SizeGroup::new(SizeGroupMode::Both),
         ];
 
         let child = self.imp().list_header.get().first_child().expect("");
@@ -60,29 +61,30 @@ impl Window {
             .expect("")
             .add_widget(&self.imp().manufacturer_header_label.get());
 
-        for i in 1..14 {
+        for i in 1..15 {
             vector_of_size_groups
                 .get(i)
                 .expect("Unable to get size group")
                 .add_widget(&child.next_sibling().expect("Unable to get sibling"));
 
             vector_of_size_groups
-                .get(11)
+                .get(12)
                 .expect("")
                 .add_widget(&match i {
                     1 => self.imp().screen_size_header_label.get(),
-                    2 => self.imp().screen_type_header_label.get(),
-                    3 => self.imp().screen_touchscreen_header_label.get(),
-                    4 => self.imp().processor_name_header_label.get(),
-                    5 => self.imp().processor_physical_cores_header_label.get(),
-                    6 => self.imp().processor_clock_speed_header_label.get(),
-                    7 => self.imp().ram_header_label.get(),
-                    8 => self.imp().disc_storage_header_label.get(),
-                    9 => self.imp().disc_type_header_label.get(),
-                    10 => self.imp().graphiccard_name_header_label.get(),
-                    11 => self.imp().graphiccard_memory_header_label.get(),
-                    12 => self.imp().os_header_label.get(),
-                    13 => self.imp().disc_reader_header_label.get(),
+                    2 => self.imp().screen_resolution_header_label.get(),
+                    3 => self.imp().screen_type_header_label.get(),
+                    4 => self.imp().screen_touchscreen_header_label.get(),
+                    5 => self.imp().processor_name_header_label.get(),
+                    6 => self.imp().processor_physical_cores_header_label.get(),
+                    7 => self.imp().processor_clock_speed_header_label.get(),
+                    8 => self.imp().ram_header_label.get(),
+                    9 => self.imp().disc_storage_header_label.get(),
+                    10 => self.imp().disc_type_header_label.get(),
+                    11 => self.imp().graphic_card_name_header_label.get(),
+                    12 => self.imp().graphic_card_memory_header_label.get(),
+                    13 => self.imp().os_header_label.get(),
+                    14 => self.imp().disc_reader_header_label.get(),
                     _ => panic!("Unexpected iteration"),
                 })
         }

@@ -22,6 +22,7 @@ pub struct Laptop {
 #[derive(Debug, Default, Clone)]
 pub struct Screen {
     pub size: Option<String>,
+    pub resolution: Option<String>,
     pub r#type: Option<String>, // "type" is a reserved keyword, so we use "r#type"
     pub touchscreen: Option<String>,
 }
@@ -51,6 +52,7 @@ impl Laptop {
             manufacturer: Some(String::new()),
             screen: Some(Screen {
                 size: Some(String::new()),
+                resolution: Some(String::new()),
                 r#type: Some(String::new()),
                 touchscreen: Some(String::new()),
             }),

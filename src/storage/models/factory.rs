@@ -8,14 +8,15 @@ impl From<CsvLaptop> for Laptop {
         Laptop {
             manufacturer: value.manufacturer,
             screen: Some(Screen {
-                size: value.resolution,
-                r#type: value.matrix_type,
-                touchscreen: value.touchscreen,
+                size: value.screen_size,
+                resolution: value.screen_resolution,
+                r#type: value.screen_type,
+                touchscreen: value.screen_touchscreen,
             }),
             processor: Some(Processor {
-                name: value.cpu,
-                physical_cores: value.physical_cores,
-                clock_speed: value.clock_speed,
+                name: value.processor_name,
+                physical_cores: value.processor_physical_cores,
+                clock_speed: value.processor_clock_speed,
             }),
             ram: value.ram,
             disc: Some(Disc {
@@ -23,11 +24,11 @@ impl From<CsvLaptop> for Laptop {
                 r#type: value.disc_type,
             }),
             graphic_card: Some(GraphicCard {
-                name: value.gpu,
-                memory: value.gram,
+                name: value.graphic_card_name,
+                memory: value.graphic_card_ram,
             }),
             os: value.os,
-            disc_reader: value.optical_drive,
+            disc_reader: value.disc_reader,
         }
     }
 }
@@ -67,6 +68,7 @@ impl From<XmlScreen> for Screen {
     fn from(xml_screen: XmlScreen) -> Self {
         Screen {
             size: xml_screen.size,
+            resolution: xml_screen.resolution,
             r#type: xml_screen.r#type,
             touchscreen: xml_screen.touchscreen,
         }
@@ -107,13 +109,14 @@ impl From<LaptopObject> for Laptop {
             manufacturer: Some(value.manufacturer()),
             screen: Some(Screen {
                 size: Some(value.screen_size()),
+                resolution: Some(value.screen_resolution()),
                 r#type: Some(value.screen_type()),
                 touchscreen: Some(value.screen_touchscreen()),
             }),
             processor: Some(Processor {
                 name: Some(value.processor_name()),
-                physical_cores: Some(value.processor_physical_cores() as u8),
-                clock_speed: Some(value.processor_clock_speed()),
+                physical_cores: Some(value.processor_physical_cores().parse().unwrap()),
+                clock_speed: Some(value.processor_clock_speed().parse().unwrap()),
             }),
             ram: Some(value.ram()),
             disc: Some(Disc {
@@ -121,8 +124,8 @@ impl From<LaptopObject> for Laptop {
                 r#type: Some(value.disc_type()),
             }),
             graphic_card: Some(GraphicCard {
-                name: Some(value.graphiccard_name()),
-                memory: Some(value.graphiccard_memory()),
+                name: Some(value.graphic_card_name()),
+                memory: Some(value.graphic_card_memory()),
             }),
             os: Some(value.os()),
             disc_reader: Some(value.disc_reader()),
@@ -132,23 +135,22 @@ impl From<LaptopObject> for Laptop {
 
 impl From<Laptop> for CsvLaptop {
     fn from(value: Laptop) -> Self {
-        // Todo: Finish this function.
         CsvLaptop {
             manufacturer: value.manufacturer.clone(),
-            matrix_size: value.screen.clone().expect("").size,
-            resolution: None,
-            matrix_type: value.screen.clone().expect("").r#type,
-            touchscreen: value.screen.clone().expect("").touchscreen,
-            cpu: None,
-            physical_cores: None,
-            clock_speed: None,
-            ram: None,
-            disc_size: None,
-            disc_type: None,
-            gpu: None,
-            gram: None,
-            os: None,
-            optical_drive: None,
+            screen_size: value.screen.clone().expect("").size,
+            screen_resolution: value.screen.clone().expect("").resolution,
+            screen_type: value.screen.clone().expect("").r#type,
+            screen_touchscreen: value.screen.clone().expect("").touchscreen,
+            processor_name: value.processor.clone().expect("").name,
+            processor_physical_cores: value.processor.clone().expect("").physical_cores,
+            processor_clock_speed: value.processor.clone().expect("").clock_speed,
+            ram: value.ram.clone(),
+            disc_size: value.disc.clone().expect("").storage,
+            disc_type: value.disc.clone().expect("").r#type,
+            graphic_card_name: value.graphic_card.clone().expect("").name,
+            graphic_card_ram: value.graphic_card.clone().expect("").name,
+            os: value.os.clone(),
+            disc_reader: value.disc_reader.clone(),
         }
     }
 }
@@ -159,6 +161,7 @@ impl From<Laptop> for XmlLaptop {
             manufacturer: value.manufacturer,
             screen: Some(XmlScreen {
                 size: value.screen.clone().expect("").size,
+                resolution: value.screen.clone().expect("").resolution,
                 r#type: value.screen.clone().expect("").r#type,
                 touchscreen: value.screen.clone().expect("").touchscreen,
             }),

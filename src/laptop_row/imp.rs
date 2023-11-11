@@ -16,6 +16,8 @@ pub struct LaptopRow {
     #[template_child]
     pub screen_size_label: TemplateChild<EditableLabel>,
     #[template_child]
+    pub screen_resolution_label: TemplateChild<EditableLabel>,
+    #[template_child]
     pub screen_type_label: TemplateChild<EditableLabel>,
     #[template_child]
     pub screen_touchscreen_label: TemplateChild<EditableLabel>,
@@ -32,9 +34,9 @@ pub struct LaptopRow {
     #[template_child]
     pub disc_type_label: TemplateChild<EditableLabel>,
     #[template_child]
-    pub graphiccard_name_label: TemplateChild<EditableLabel>,
+    pub graphic_card_name_label: TemplateChild<EditableLabel>,
     #[template_child]
-    pub graphiccard_memory_label: TemplateChild<EditableLabel>,
+    pub graphic_card_memory_label: TemplateChild<EditableLabel>,
     #[template_child]
     pub os_label: TemplateChild<EditableLabel>,
     #[template_child]

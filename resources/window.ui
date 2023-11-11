@@ -72,6 +72,13 @@
                                             </object>
                                         </child>
                                         <child>
+                                            <object class="GtkLabel" id="screen_resolution_header_label">
+                                                <property name="margin-top">12</property>
+                                                <property name="margin-bottom">12</property>
+                                                <property name="label">Rozdzielczość</property>
+                                            </object>
+                                        </child>
+                                        <child>
                                             <object class="GtkLabel" id="screen_type_header_label">
                                                 <property name="margin-top">12</property>
                                                 <property name="margin-bottom">12</property>
@@ -128,14 +135,14 @@
                                             </object>
                                         </child>
                                         <child>
-                                            <object class="GtkLabel" id="graphiccard_name_header_label">
+                                            <object class="GtkLabel" id="graphic_card_name_header_label">
                                                 <property name="margin-top">12</property>
                                                 <property name="margin-bottom">12</property>
                                                 <property name="label">Karta graficzna</property>
                                             </object>
                                         </child>
                                         <child>
-                                            <object class="GtkLabel" id="graphiccard_memory_header_label">
+                                            <object class="GtkLabel" id="graphic_card_memory_header_label">
                                                 <property name="margin-top">12</property>
                                                 <property name="margin-bottom">12</property>
                                                 <property name="label">Pamięć karty graficznej</property>

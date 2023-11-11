@@ -22,6 +22,7 @@ pub struct XmlLaptop {
 #[derive(YaSerialize, YaDeserialize, Serialize, Deserialize, Debug)]
 pub struct XmlScreen {
     pub(crate) size: Option<String>,
+    pub(crate) resolution: Option<String>,
     #[yaserde(rename = "type")]
     pub(crate) r#type: Option<String>, // "type" is a reserved keyword, so we use "r#type"
     pub(crate) touchscreen: Option<String>,

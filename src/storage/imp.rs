@@ -24,20 +24,20 @@ impl Storage {
 
         reader.set_headers(StringRecord::from(vec![
             "manufacturer",
-            "matrix_size",
-            "resolution",
-            "matrix_type",
-            "touchscreen",
-            "cpu",
-            "physical_cores",
-            "clock_speed",
+            "screen_size",
+            "screen_resolution",
+            "screen_type",
+            "screen_touchscreen",
+            "processor_name",
+            "processor_physical_cores",
+            "processor_clock_speed",
             "ram",
             "disc_size",
             "disc_type",
-            "gpu",
-            "gram",
+            "graphic_card_name",
+            "graphic_card_ram",
             "os",
-            "optical_drive",
+            "disc_reader",
         ]));
 
         let mut vector_of_laptops = vec![];

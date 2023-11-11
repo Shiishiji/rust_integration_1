@@ -6,25 +6,25 @@ pub struct CsvLaptop {
     pub(crate) manufacturer: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) matrix_size: Option<String>,
+    pub(crate) screen_size: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) resolution: Option<String>,
+    pub(crate) screen_resolution: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) matrix_type: Option<String>,
+    pub(crate) screen_type: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) touchscreen: Option<String>,
+    pub(crate) screen_touchscreen: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) cpu: Option<String>,
+    pub(crate) processor_name: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) physical_cores: Option<u8>,
+    pub(crate) processor_physical_cores: Option<u8>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) clock_speed: Option<i32>,
+    pub(crate) processor_clock_speed: Option<i32>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
     pub(crate) ram: Option<String>,
@@ -36,14 +36,14 @@ pub struct CsvLaptop {
     pub(crate) disc_type: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) gpu: Option<String>,
+    pub(crate) graphic_card_name: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) gram: Option<String>,
+    pub(crate) graphic_card_ram: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
     pub(crate) os: Option<String>,
 
     #[serde(deserialize_with = "csv::invalid_option")]
-    pub(crate) optical_drive: Option<String>,
+    pub(crate) disc_reader: Option<String>,
 }
