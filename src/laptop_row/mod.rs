@@ -59,55 +59,55 @@ impl LaptopRow {
                 .add_widget(&screen_size_label);
             size_groups
                 .get(2)
-                .expect("cannot get size group 1")
+                .expect("cannot get size group 2")
                 .add_widget(&screen_resolution_label);
             size_groups
                 .get(3)
-                .expect("cannot get size group 2")
+                .expect("cannot get size group 3")
                 .add_widget(&screen_type_label);
             size_groups
                 .get(4)
-                .expect("cannot get size group 3")
+                .expect("cannot get size group 4")
                 .add_widget(&screen_touchscreen_label);
             size_groups
                 .get(5)
-                .expect("cannot get size group 4")
+                .expect("cannot get size group 5")
                 .add_widget(&processor_name_label);
             size_groups
                 .get(6)
-                .expect("cannot get size group 5")
+                .expect("cannot get size group 6")
                 .add_widget(&processor_physical_cores_label);
             size_groups
                 .get(7)
-                .expect("cannot get size group 6")
+                .expect("cannot get size group 7")
                 .add_widget(&processor_clock_speed_label);
             size_groups
                 .get(8)
-                .expect("cannot get size group 7")
+                .expect("cannot get size group 8")
                 .add_widget(&ram_label);
             size_groups
                 .get(9)
-                .expect("cannot get size group 8")
+                .expect("cannot get size group 9")
                 .add_widget(&disc_storage_label);
             size_groups
                 .get(10)
-                .expect("cannot get size group 9")
+                .expect("cannot get size group 10")
                 .add_widget(&disc_type_label);
             size_groups
                 .get(11)
-                .expect("cannot get size group 10")
+                .expect("cannot get size group 11")
                 .add_widget(&graphic_card_name_label);
             size_groups
                 .get(12)
-                .expect("cannot get size group 11")
+                .expect("cannot get size group 12")
                 .add_widget(&graphic_card_memory_label);
             size_groups
                 .get(13)
-                .expect("cannot get size group 12")
+                .expect("cannot get size group 13")
                 .add_widget(&os_label);
             size_groups
                 .get(14)
-                .expect("cannot get size group 13")
+                .expect("cannot get size group 14")
                 .add_widget(&disc_reader_label);
         }
 
@@ -138,6 +138,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("screen_type", &screen_type_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
@@ -201,6 +202,7 @@ impl LaptopRow {
         bindings.push(
             laptop_object
                 .bind_property("disc_type", &disc_type_label, "text")
+                .bidirectional()
                 .sync_create()
                 .build(),
         );
