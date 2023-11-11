@@ -5,8 +5,8 @@ use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{glib, EditableLabel};
 
-use crate::laptop_object::LaptopObject;
-use crate::window::Window;
+use crate::gui::laptop_object::LaptopObject;
+use crate::gui::window::Window;
 
 glib::wrapper! {
     pub struct LaptopRow(ObjectSubclass<imp::LaptopRow>)
@@ -264,8 +264,6 @@ impl LaptopRow {
             .expect("p4 not found")
             .parent() // Finally a main Window
             .expect("p5 not found");
-
-        println!("{:?}", window);
 
         // Cast to Window instance
         window.downcast::<Window>().ok()

@@ -1,14 +1,12 @@
-use crate::window::Window;
+use crate::gui::window::Window;
 use adw::gdk::Display;
 use adw::gio;
 use adw::prelude::*;
 use adw::{glib, Application};
 use gtk::CssProvider;
 
-mod laptop_object;
-mod laptop_row;
 mod storage;
-mod window;
+mod gui;
 
 static APP_ID: &str = "org.shiishiji.Integration1";
 

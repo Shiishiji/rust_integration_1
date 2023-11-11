@@ -1,4 +1,4 @@
-use crate::laptop_object::LaptopObject;
+use crate::gui::laptop_object::LaptopObject;
 use crate::storage::models::{Laptop, Laptops};
 use crate::storage::Storage;
 use adw::gio;

@@ -1,7 +1,7 @@
 mod imp;
 
-use crate::laptop_object::LaptopObject;
-use crate::laptop_row::LaptopRow;
+use crate::gui::laptop_object::LaptopObject;
+use crate::gui::laptop_row::LaptopRow;
 use adw::subclass::prelude::ObjectSubclassIsExt;
 use adw::{gio, glib, Application};
 use glib::Object;

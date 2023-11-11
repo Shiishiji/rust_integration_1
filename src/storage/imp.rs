@@ -77,15 +77,18 @@ impl Storage {
             .from_path(filename)
             .expect("Writer error.");
 
+        let mut i = 0;
         for laptop in data.laptops {
             let csv_laptop = CsvLaptop::from(laptop);
 
             writer
                 .serialize(&csv_laptop)
                 .expect("Error while saving to csv.");
+            i+=1;
         }
 
         writer.flush().expect("Error while flushing.");
+        println!("Saved {} records to {}.", i, filename);
     }
 
     pub fn save_to_xml(&self, filename: &str, data: Laptops) {
@@ -94,7 +97,6 @@ impl Storage {
         let mut i = 0;
         let mut vec_laptops = vec![];
         for laptop in data.laptops {
-            println!("{:?}", laptop);
             let xml_laptop = XmlLaptop::from(laptop);
             vec_laptops.push(xml_laptop);
             i+=1;

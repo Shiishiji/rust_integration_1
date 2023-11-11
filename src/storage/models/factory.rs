@@ -1,4 +1,4 @@
-use crate::laptop_object::LaptopObject;
+use crate::gui::laptop_object::LaptopObject;
 use crate::storage::models::models_csv::*;
 use crate::storage::models::models_xml::*;
 use crate::storage::models::*;
