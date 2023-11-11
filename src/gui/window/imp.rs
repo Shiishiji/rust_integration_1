@@ -6,13 +6,8 @@ use adw::glib::subclass::InitializingObject;
 use adw::prelude::*;
 use adw::subclass::prelude::ObjectSubclass;
 use adw::subclass::prelude::*;
-use gtk::builders::FileChooserDialogBuilder;
-use gtk::ffi::GtkFileDialog;
-use gtk::{
-    glib, template_callbacks, Button, CompositeTemplate, FileChooserAction, FileChooserDialog,
-    Label, ListView, SizeGroup, SizeGroupMode,
-};
-use std::cell::{Cell, RefCell};
+use gtk::{glib, template_callbacks, Button, CompositeTemplate, Label, ListView, SizeGroup};
+use std::cell::RefCell;
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/shiishiji/integration1/window.ui")]

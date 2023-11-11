@@ -84,7 +84,7 @@ impl Storage {
             writer
                 .serialize(&csv_laptop)
                 .expect("Error while saving to csv.");
-            i+=1;
+            i += 1;
         }
 
         writer.flush().expect("Error while flushing.");
@@ -99,7 +99,7 @@ impl Storage {
         for laptop in data.laptops {
             let xml_laptop = XmlLaptop::from(laptop);
             vec_laptops.push(xml_laptop);
-            i+=1;
+            i += 1;
         }
 
         let xml_laptops = XmlLaptops {

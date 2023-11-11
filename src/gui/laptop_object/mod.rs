@@ -1,4 +1,4 @@
-use crate::storage::models::{Laptop, Screen};
+use crate::storage::models::Laptop;
 use adw::glib;
 use adw::glib::Object;
 

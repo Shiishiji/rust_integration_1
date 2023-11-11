@@ -5,8 +5,8 @@ use adw::prelude::*;
 use adw::{glib, Application};
 use gtk::CssProvider;
 
-mod storage;
 mod gui;
+mod storage;
 
 static APP_ID: &str = "org.shiishiji.Integration1";
 

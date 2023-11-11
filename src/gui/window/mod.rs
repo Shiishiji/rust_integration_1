@@ -7,7 +7,6 @@ use adw::{gio, glib, Application};
 use glib::Object;
 use gtk::prelude::*;
 use gtk::{ListItem, NoSelection, SignalListItemFactory, SizeGroup, SizeGroupMode};
-use BoxExt;
 
 glib::wrapper! {
     pub struct Window(ObjectSubclass<imp::Window>)

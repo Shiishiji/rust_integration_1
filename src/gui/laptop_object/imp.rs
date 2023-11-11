@@ -1,4 +1,4 @@
-use std::cell::{Cell, RefCell};
+use std::cell::RefCell;
 
 use glib::prelude::*;
 use glib::subclass::prelude::ObjectSubclass;
