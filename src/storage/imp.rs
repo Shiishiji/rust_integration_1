@@ -8,15 +8,10 @@ use std::io::{Read, Write};
 
 impl Storage {
     pub fn new() -> Self {
-        Storage {
-            source_txt_file_path: "laptopy.txt".to_string(),
-            source_xml_file_path: "laptopy.xml".to_string(),
-        }
+        Storage {}
     }
 
-    pub fn load_from_txt(&self) -> Laptops {
-        let file_path = self.source_txt_file_path.to_owned();
-
+    pub fn load_from_txt(&self, file_path: &str) -> Laptops {
         let mut reader = ReaderBuilder::new()
             .delimiter(b';')
             .from_path(file_path)
@@ -50,8 +45,7 @@ impl Storage {
         Laptops::from(vector_of_laptops)
     }
 
-    pub fn load_from_xml(&self) -> Laptops {
-        let file_path = self.source_xml_file_path.to_owned();
+    pub fn load_from_xml(&self, file_path: &str) -> Laptops {
         let mut xml = String::new();
 
         /*

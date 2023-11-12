@@ -6,7 +6,10 @@ use adw::glib::subclass::InitializingObject;
 use adw::prelude::*;
 use adw::subclass::prelude::ObjectSubclass;
 use adw::subclass::prelude::*;
-use gtk::{glib, template_callbacks, Button, CompositeTemplate, Label, ListView, SizeGroup};
+use gtk::{
+    glib, template_callbacks, Button, CompositeTemplate, FileChooserAction, FileChooserDialog,
+    Label, ListView, ResponseType, SizeGroup,
+};
 use std::cell::RefCell;
 
 #[derive(CompositeTemplate, Default)]
@@ -67,79 +70,77 @@ impl ObjectSubclass for Window {
     }
 }
 
-// it could have template_callbacks
 #[template_callbacks]
 impl Window {
-    // implement button handlers here
     #[template_callback]
     fn handle_load_txt_data(&self, _button: &Button) {
         println!("Loading data from txt.");
-        let storage = Storage::new();
-        let laptops_from_csv = storage.load_from_txt();
+        let laptops = self
+            .laptops
+            .borrow()
+            .clone()
+            .expect("Couldn't get reference to laptops");
 
-        let mut i: i32 = 0;
-        for laptop in laptops_from_csv.laptops {
-            let laptop_obj = LaptopObject::new(laptop);
+        self.get_filename_and_perform_action(FileChooserAction::Open, move |filename| {
+            let storage = Storage::new();
+            let laptops_from_csv = storage.load_from_txt(filename);
 
-            self.laptops
-                .borrow()
-                .clone()
-                .expect("Couldn't get reference to laptops")
-                .append(&laptop_obj);
-            i += 1;
-        }
+            let mut i: i32 = 0;
+            for laptop in laptops_from_csv.laptops {
+                let laptop_obj = LaptopObject::new(laptop);
 
-        println!("Loaded {} records.", i);
+                laptops.append(&laptop_obj);
+                i += 1;
+            }
+
+            println!("Loaded {} records.", i);
+        });
     }
 
     #[template_callback]
     fn handle_load_xml_data(&self, _button: &Button) {
         println!("Loading data from xml.");
-        let storage = Storage::new();
-        let laptops_from_csv = storage.load_from_xml();
+        let laptops = self
+            .laptops
+            .borrow()
+            .clone()
+            .expect("Couldn't get reference to laptops");
 
-        let mut i: i32 = 0;
-        for laptop in laptops_from_csv.laptops {
-            let laptop_obj = LaptopObject::new(laptop);
+        self.get_filename_and_perform_action(FileChooserAction::Open, move |filename: &str| {
+            let storage = Storage::new();
+            let laptops_from_xml = storage.load_from_xml(filename);
 
-            self.laptops
-                .borrow()
-                .clone()
-                .expect("Couldn't get reference to laptops")
-                .append(&laptop_obj);
-            i += 1;
-        }
+            let mut i: i32 = 0;
+            for laptop in laptops_from_xml.laptops {
+                let laptop_obj = LaptopObject::new(laptop);
+                laptops.append(&laptop_obj);
+                i += 1;
+            }
 
-        println!("Loaded {} records.", i);
+            println!("Loaded {} records.", i);
+        });
     }
 
     #[template_callback]
     fn handle_save_xml_data(&self, _button: &Button) {
-        let desired_file = "saved.xml";
-        let storage = Storage::new();
-        let laptops_vec = self.get_laptops();
-
-        storage.save_to_xml(
-            desired_file,
-            Laptops {
-                laptops: laptops_vec,
-            },
-        );
+        let laptops = Laptops {
+            laptops: self.get_laptops().clone(),
+        };
+        self.get_filename_and_perform_action(FileChooserAction::Save, move |filename: &str| {
+            let storage = Storage::new();
+            storage.save_to_xml(filename, laptops.clone());
+        });
     }
 
     #[template_callback]
     fn handle_save_txt_data(&self, _button: &Button) {
-        let desired_file = "saved.csv";
-        let storage = Storage::new();
-
-        let laptops_vec = self.get_laptops();
-
-        storage.save_to_txt(
-            desired_file,
-            Laptops {
-                laptops: laptops_vec,
-            },
-        );
+        let laptops = Laptops {
+            laptops: self.get_laptops().clone(),
+        };
+        self.get_filename_and_perform_action(FileChooserAction::Save, move |filename: &str| {
+            let storage = Storage::new();
+            storage.save_to_txt(filename, laptops.clone());
+        });
     }
 
     fn get_laptops(&self) -> Vec<Laptop> {
@@ -163,6 +164,40 @@ impl Window {
         }
 
         laptops_vec
+    }
+
+    fn get_filename_and_perform_action<F>(&self, action_type: FileChooserAction, action: F)
+    where
+        F: Fn(&str) + 'static,
+    {
+        let obj = &self.obj();
+
+        let file_dialog =
+            FileChooserDialog::new(Some("Wybierz plik"), Some(obj.as_ref()), action_type, &[]);
+
+        file_dialog.add_button("Cancel", ResponseType::Cancel.into());
+        file_dialog.add_button("Open", ResponseType::Accept.into());
+
+        // Connect the response signal
+        file_dialog.connect_response(move |dialog, response| {
+            match response {
+                ResponseType::Accept => {
+                    let file = dialog.file().expect("cannot get the file");
+
+                    if let Some(filename) = file.path() {
+                        let path = filename.to_str().expect("");
+                        println!("Selected path: {:?}", path);
+
+                        action(path);
+                    }
+                }
+                _ => (),
+            }
+            dialog.close();
+        });
+
+        // Show the file chooser dialog
+        file_dialog.show();
     }
 }
 

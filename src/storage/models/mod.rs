@@ -2,7 +2,7 @@ pub(super) mod factory;
 pub(super) mod models_csv;
 pub(super) mod models_xml;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Laptops {
     pub laptops: Vec<Laptop>,
 }
