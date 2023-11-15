@@ -122,6 +122,28 @@ impl Window {
     }
 
     #[template_callback]
+    async fn handle_load_db_data(&self, _: &Button) {
+        println!("Loading data from database.");
+        let laptops = self
+            .laptops
+            .borrow()
+            .clone()
+            .expect("Couldn't get reference to laptops");
+
+        let storage = Storage::new();
+        let laptops_from_db = storage.load_from_db().await;
+
+        let mut i: i32 = 0;
+        for laptop in laptops_from_db.laptops {
+            let laptop_obj = LaptopObject::new(laptop);
+            laptops.append(&laptop_obj);
+            i += 1;
+        }
+
+        println!("Loaded {} records.", i);
+    }
+
+    #[template_callback]
     fn handle_save_xml_data(&self, _button: &Button) {
         let laptops = Laptops {
             laptops: self.get_laptops().clone(),
@@ -141,6 +163,18 @@ impl Window {
             let storage = Storage::new();
             storage.save_to_txt(filename, laptops.clone());
         });
+    }
+
+    #[template_callback]
+    async fn handle_save_db_data(&self, _: &Button) {
+        let storage = Storage::new();
+        let laptops = Laptops {
+            laptops: self.get_laptops().clone(),
+        };
+
+        println!("below a db call");
+        storage.save_to_db(laptops.clone()).await;
+        println!("a db call ended");
     }
 
     fn get_laptops(&self) -> Vec<Laptop> {

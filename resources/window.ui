@@ -31,6 +31,12 @@
                         </child>
                         <child>
                             <object class="GtkButton">
+                                <signal name="clicked" handler="handle_load_db_data" swapped="true"/>
+                                <property name="label">Wczytaj dane z bazy</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkButton">
                                 <signal name="clicked" handler="handle_save_txt_data" swapped="true"/>
                                 <property name="label">Zapisz dane do TXT</property>
                             </object>
@@ -39,6 +45,12 @@
                             <object class="GtkButton">
                                 <signal name="clicked" handler="handle_save_xml_data" swapped="true"/>
                                 <property name="label">Zapisz dane do XML</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkButton">
+                                <signal name="clicked" handler="handle_save_db_data" swapped="true"/>
+                                <property name="label">Zapisz dane do bazy</property>
                             </object>
                         </child>
                     </object>

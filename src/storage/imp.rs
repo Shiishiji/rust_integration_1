@@ -1,14 +1,18 @@
 use crate::storage::models::models_csv::*;
+use crate::storage::models::models_db::DbLaptop;
 use crate::storage::models::models_xml::*;
-use crate::storage::models::Laptops;
+use crate::storage::models::{Laptop, Laptops};
 use crate::storage::Storage;
 use csv::{ReaderBuilder, StringRecord, WriterBuilder};
+use sqlx::{Connection, SqliteConnection};
 use std::fs::File;
 use std::io::{Read, Write};
 
 impl Storage {
     pub fn new() -> Self {
-        Storage {}
+        Storage {
+            sqlite: "data.sqlite".to_string(),
+        }
     }
 
     pub fn load_from_txt(&self, file_path: &str) -> Laptops {
@@ -64,6 +68,25 @@ impl Storage {
         Laptops::from(parsed_xml)
     }
 
+    pub async fn load_from_db(&self) -> Laptops {
+        let mut conn = SqliteConnection::connect(&*format!("sqlite:{}", self.sqlite))
+            .await
+            .expect("Cannot connect");
+
+        let mut laptops_vec: Vec<Laptop> = vec![];
+        let query = r#"
+            SELECT * FROM laptops
+        "#;
+        let stream = sqlx::query_as::<_, DbLaptop>(query);
+        for row in stream.fetch_all(&mut conn).await.expect("DB query failed") {
+            laptops_vec.push(Laptop::from(row));
+        }
+
+        Laptops {
+            laptops: laptops_vec,
+        }
+    }
+
     pub fn save_to_txt(&self, filename: &str, data: Laptops) {
         let mut writer = WriterBuilder::new()
             .has_headers(false)
@@ -104,5 +127,54 @@ impl Storage {
 
         file.write(xml.as_ref()).expect("Unable to write");
         println!("Saved {} records to {}.", i, filename);
+    }
+
+    pub async fn save_to_db(&self, data: Laptops) {
+        let mut conn = SqliteConnection::connect("sqlite:data.sqlite")
+            .await
+            .expect("Cannot connect");
+
+        let insert_query = r#"
+        INSERT INTO laptops (
+            manufacturer,
+            screen_size,
+            screen_resolution,
+            screen_type,
+            screen_touchscreen,
+            processor_name,
+            processor_physical_cores,
+            processor_clock_speed,
+            ram,
+            disc_storage,
+            disc_type,
+            graphic_card_name,
+            graphic_card_memory,
+            os,
+            disc_reader
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    "#;
+
+        for laptop_model in data.laptops {
+            let laptop: DbLaptop = DbLaptop::from(laptop_model);
+            sqlx::query(insert_query)
+                .bind(&laptop.manufacturer)
+                .bind(&laptop.screen_size)
+                .bind(&laptop.screen_resolution)
+                .bind(&laptop.screen_type)
+                .bind(&laptop.screen_touchscreen)
+                .bind(&laptop.processor_name)
+                .bind(&laptop.processor_physical_cores)
+                .bind(&laptop.processor_clock_speed)
+                .bind(&laptop.ram)
+                .bind(&laptop.disc_storage)
+                .bind(&laptop.disc_type)
+                .bind(&laptop.graphic_card_name)
+                .bind(&laptop.graphic_card_memory)
+                .bind(&laptop.os)
+                .bind(&laptop.disc_reader)
+                .execute(&mut conn)
+                .await
+                .expect("Failed to execute SQL.");
+        }
     }
 }

@@ -1,5 +1,6 @@
 pub(super) mod factory;
 pub(super) mod models_csv;
+pub(super) mod models_db;
 pub(super) mod models_xml;
 
 #[derive(Debug, Default, Clone)]

@@ -4,11 +4,13 @@ use adw::gio;
 use adw::prelude::*;
 use adw::{glib, Application};
 use gtk::CssProvider;
+use sqlx::migrate::Migrator;
 
 mod gui;
 mod storage;
 
 static APP_ID: &str = "org.shiishiji.Integration1";
+static _MIGRATOR: Migrator = sqlx::migrate!();
 
 fn main() -> glib::ExitCode {
     gio::resources_register_include!("gresource").expect("Could not load the resource.");

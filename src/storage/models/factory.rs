@@ -1,5 +1,6 @@
 use crate::gui::laptop_object::LaptopObject;
 use crate::storage::models::models_csv::*;
+use crate::storage::models::models_db::DbLaptop;
 use crate::storage::models::models_xml::*;
 use crate::storage::models::*;
 
@@ -178,6 +179,58 @@ impl From<Laptop> for XmlLaptop {
             graphic_card: Some(XmlGraphicCard {
                 name: value.graphic_card.clone().expect("").name,
                 memory: value.graphic_card.clone().expect("").memory,
+            }),
+            os: value.os,
+            disc_reader: value.disc_reader,
+        }
+    }
+}
+
+impl From<Laptop> for DbLaptop {
+    fn from(value: Laptop) -> Self {
+        DbLaptop {
+            manufacturer: value.manufacturer,
+            screen_size: value.screen.clone().expect("").size,
+            screen_resolution: value.screen.clone().expect("").resolution,
+            screen_type: value.screen.clone().expect("").r#type,
+            screen_touchscreen: value.screen.clone().expect("").touchscreen,
+            processor_name: value.processor.clone().expect("").name,
+            processor_physical_cores: value.processor.clone().expect("").physical_cores,
+            processor_clock_speed: value.processor.clone().expect("").clock_speed,
+            ram: value.ram,
+            disc_storage: value.disc.clone().expect("").storage,
+            disc_type: value.disc.clone().expect("").r#type,
+            graphic_card_name: value.graphic_card.clone().expect("").name,
+            graphic_card_memory: value.graphic_card.clone().expect("").memory,
+            os: value.os,
+            disc_reader: value.disc_reader,
+        }
+    }
+}
+
+impl From<DbLaptop> for Laptop {
+    fn from(value: DbLaptop) -> Self {
+        Laptop {
+            manufacturer: value.manufacturer,
+            screen: Some(Screen {
+                size: value.screen_size,
+                resolution: value.screen_resolution,
+                r#type: value.screen_type,
+                touchscreen: value.screen_touchscreen,
+            }),
+            processor: Some(Processor {
+                name: value.processor_name,
+                physical_cores: value.processor_physical_cores,
+                clock_speed: value.processor_clock_speed,
+            }),
+            ram: value.ram,
+            disc: Some(Disc {
+                storage: value.disc_storage,
+                r#type: value.disc_type,
+            }),
+            graphic_card: Some(GraphicCard {
+                name: value.graphic_card_name,
+                memory: value.graphic_card_memory,
             }),
             os: value.os,
             disc_reader: value.disc_reader,
