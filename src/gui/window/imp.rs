@@ -52,6 +52,9 @@ pub struct Window {
     pub list_header: TemplateChild<gtk::Box>,
     pub laptops: RefCell<Option<gio::ListStore>>,
     pub size_groups: RefCell<Vec<SizeGroup>>,
+
+    #[template_child]
+    pub status_label: TemplateChild<Label>,
 }
 
 #[glib::object_subclass]
@@ -81,6 +84,8 @@ impl Window {
             .clone()
             .expect("Couldn't get reference to laptops");
 
+        let status = self.status_label.get();
+
         self.get_filename_and_perform_action(FileChooserAction::Open, move |filename| {
             let storage = Storage::new();
             let laptops_from_csv = storage.load_from_txt(filename);
@@ -93,6 +98,7 @@ impl Window {
                 i += 1;
             }
 
+            status.set_label(&*format!("Wczytano {} rekordów.", i));
             println!("Loaded {} records.", i);
         });
     }
@@ -106,6 +112,8 @@ impl Window {
             .clone()
             .expect("Couldn't get reference to laptops");
 
+        let status = self.status_label.get();
+
         self.get_filename_and_perform_action(FileChooserAction::Open, move |filename: &str| {
             let storage = Storage::new();
             let laptops_from_xml = storage.load_from_xml(filename);
@@ -117,6 +125,7 @@ impl Window {
                 i += 1;
             }
 
+            status.set_label(&*format!("Wczytano {} rekordów.", i));
             println!("Loaded {} records.", i);
         });
     }
@@ -140,6 +149,8 @@ impl Window {
             i += 1;
         }
 
+        let status = self.status_label.get();
+        status.set_label(&*format!("Wczytano {} rekordów.", i));
         println!("Loaded {} records.", i);
     }
 
@@ -148,9 +159,11 @@ impl Window {
         let laptops = Laptops {
             laptops: self.get_laptops().clone(),
         };
+        let status = self.status_label.get();
         self.get_filename_and_perform_action(FileChooserAction::Save, move |filename: &str| {
             let storage = Storage::new();
             storage.save_to_xml(filename, laptops.clone());
+            status.set_label(&*format!("Zapisano rekordy do XML: {}", filename));
         });
     }
 
@@ -159,9 +172,11 @@ impl Window {
         let laptops = Laptops {
             laptops: self.get_laptops().clone(),
         };
+        let status = self.status_label.get();
         self.get_filename_and_perform_action(FileChooserAction::Save, move |filename: &str| {
             let storage = Storage::new();
             storage.save_to_txt(filename, laptops.clone());
+            status.set_label(&*format!("Zapisano rekordy do CSV: {}", filename));
         });
     }
 
@@ -171,10 +186,10 @@ impl Window {
         let laptops = Laptops {
             laptops: self.get_laptops().clone(),
         };
+        let status = self.status_label.get();
 
-        println!("below a db call");
         storage.save_to_db(laptops.clone()).await;
-        println!("a db call ended");
+        status.set_label(&*format!("Zapisano rekordy do bazy danych."));
     }
 
     fn get_laptops(&self) -> Vec<Laptop> {

@@ -185,6 +185,12 @@
                         </child>
                     </object>
                 </child>
+
+                <child>
+                    <object class="GtkLabel" id="status_label">
+                        <property name="label"/>
+                    </object>
+                </child>
             </object>
         </child>
     </template>
