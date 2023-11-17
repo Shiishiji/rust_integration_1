@@ -1,12 +1,14 @@
 mod imp;
 
+use crate::gui::laptop_list::LaptopList;
 use glib::Object;
+use gtk::glib::Binding;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
-use gtk::{glib, EditableLabel};
+use gtk::{glib, EditableLabel, SizeGroup};
+use std::cell::RefMut;
 
 use crate::gui::laptop_object::LaptopObject;
-use crate::gui::window::Window;
 
 glib::wrapper! {
     pub struct LaptopRow(ObjectSubclass<imp::LaptopRow>)
@@ -26,7 +28,6 @@ impl LaptopRow {
     }
 
     pub fn bind(&self, laptop_object: &LaptopObject) {
-        let mut bindings = self.imp().bindings.borrow_mut();
         let manufacturer_label = self.imp().manufacturer_label.get();
         let screen_size_label = self.imp().screen_size_label.get();
         let screen_resolution_label = self.imp().screen_resolution_label.get();
@@ -45,199 +46,131 @@ impl LaptopRow {
 
         {
             // Size groups
-            let window = self.get_window().expect("Window not found");
+            let size_groups = self
+                .parent()
+                .expect("Cannot reference parent: expected ListItem")
+                .parent()
+                .expect("Cannot reference parent: expected ListRow")
+                .parent()
+                .expect("Cannot reference parent: expected LaptopList")
+                .downcast_ref::<LaptopList>()
+                .expect("Cannot cast to LaptopList")
+                .imp()
+                .size_groups
+                .borrow()
+                .clone();
 
-            let size_groups = window.imp().size_groups.borrow();
-
-            size_groups
-                .get(0)
-                .expect("cannot get size group 0")
-                .add_widget(&manufacturer_label);
-            size_groups
-                .get(1)
-                .expect("cannot get size group 1")
-                .add_widget(&screen_size_label);
-            size_groups
-                .get(2)
-                .expect("cannot get size group 2")
-                .add_widget(&screen_resolution_label);
-            size_groups
-                .get(3)
-                .expect("cannot get size group 3")
-                .add_widget(&screen_type_label);
-            size_groups
-                .get(4)
-                .expect("cannot get size group 4")
-                .add_widget(&screen_touchscreen_label);
-            size_groups
-                .get(5)
-                .expect("cannot get size group 5")
-                .add_widget(&processor_name_label);
-            size_groups
-                .get(6)
-                .expect("cannot get size group 6")
-                .add_widget(&processor_physical_cores_label);
-            size_groups
-                .get(7)
-                .expect("cannot get size group 7")
-                .add_widget(&processor_clock_speed_label);
-            size_groups
-                .get(8)
-                .expect("cannot get size group 8")
-                .add_widget(&ram_label);
-            size_groups
-                .get(9)
-                .expect("cannot get size group 9")
-                .add_widget(&disc_storage_label);
-            size_groups
-                .get(10)
-                .expect("cannot get size group 10")
-                .add_widget(&disc_type_label);
-            size_groups
-                .get(11)
-                .expect("cannot get size group 11")
-                .add_widget(&graphic_card_name_label);
-            size_groups
-                .get(12)
-                .expect("cannot get size group 12")
-                .add_widget(&graphic_card_memory_label);
-            size_groups
-                .get(13)
-                .expect("cannot get size group 13")
-                .add_widget(&os_label);
-            size_groups
-                .get(14)
-                .expect("cannot get size group 14")
-                .add_widget(&disc_reader_label);
+            for i in 0..15 {
+                match i {
+                    0 => self.add_to_size_group(&size_groups, i, &manufacturer_label),
+                    1 => self.add_to_size_group(&size_groups, i, &screen_size_label),
+                    2 => self.add_to_size_group(&size_groups, i, &screen_resolution_label),
+                    3 => self.add_to_size_group(&size_groups, i, &screen_type_label),
+                    4 => self.add_to_size_group(&size_groups, i, &screen_touchscreen_label),
+                    5 => self.add_to_size_group(&size_groups, i, &processor_name_label),
+                    6 => self.add_to_size_group(&size_groups, i, &processor_physical_cores_label),
+                    7 => self.add_to_size_group(&size_groups, i, &processor_clock_speed_label),
+                    8 => self.add_to_size_group(&size_groups, i, &ram_label),
+                    9 => self.add_to_size_group(&size_groups, i, &disc_storage_label),
+                    10 => self.add_to_size_group(&size_groups, i, &disc_type_label),
+                    11 => self.add_to_size_group(&size_groups, i, &graphic_card_name_label),
+                    12 => self.add_to_size_group(&size_groups, i, &graphic_card_memory_label),
+                    13 => self.add_to_size_group(&size_groups, i, &os_label),
+                    14 => self.add_to_size_group(&size_groups, i, &disc_reader_label),
+                    _ => {}
+                }
+            }
         }
 
-        bindings.push(
-            laptop_object
-                .bind_property("manufacturer", &manufacturer_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("screen_size", &screen_size_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("screen_resolution", &screen_resolution_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("screen_type", &screen_type_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("screen_touchscreen", &screen_touchscreen_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("processor_name", &processor_name_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property(
-                    "processor_physical_cores",
-                    &processor_physical_cores_label,
-                    "text",
-                )
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property(
-                    "processor_clock_speed",
-                    &processor_clock_speed_label,
-                    "text",
-                )
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("ram", &ram_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("disc_storage", &disc_storage_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("disc_type", &disc_type_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("graphic_card_name", &graphic_card_name_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("graphic_card_memory", &graphic_card_memory_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("os", &os_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
-
-        bindings.push(
-            laptop_object
-                .bind_property("disc_reader", &disc_reader_label, "text")
-                .bidirectional()
-                .sync_create()
-                .build(),
-        );
+        {
+            // Bindings
+            let mut bindings = self.imp().bindings.borrow_mut();
+            for i in 0..15 {
+                match i {
+                    0 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "manufacturer",
+                        &manufacturer_label,
+                    ),
+                    1 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "screen_size",
+                        &screen_size_label,
+                    ),
+                    2 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "screen_resolution",
+                        &screen_resolution_label,
+                    ),
+                    3 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "screen_type",
+                        &screen_type_label,
+                    ),
+                    4 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "screen_touchscreen",
+                        &screen_touchscreen_label,
+                    ),
+                    5 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "processor_name",
+                        &processor_name_label,
+                    ),
+                    6 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "processor_physical_cores",
+                        &processor_physical_cores_label,
+                    ),
+                    7 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "processor_clock_speed",
+                        &processor_clock_speed_label,
+                    ),
+                    8 => self.add_binding(&mut bindings, &laptop_object, "ram", &ram_label),
+                    9 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "disc_storage",
+                        &disc_storage_label,
+                    ),
+                    10 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "disc_type",
+                        &disc_type_label,
+                    ),
+                    11 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "graphic_card_name",
+                        &graphic_card_name_label,
+                    ),
+                    12 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "graphic_card_memory",
+                        &graphic_card_memory_label,
+                    ),
+                    13 => self.add_binding(&mut bindings, &laptop_object, "os", &os_label),
+                    14 => self.add_binding(
+                        &mut bindings,
+                        &laptop_object,
+                        "disc_reader",
+                        &disc_reader_label,
+                    ),
+                    _ => {}
+                }
+            }
+        }
     }
 
     pub fn unbind(&self) {
@@ -246,26 +179,26 @@ impl LaptopRow {
         }
     }
 
-    fn get_window(&self) -> Option<Window> {
-        let parent = self.parent();
+    fn add_to_size_group(&self, size_groups: &Vec<SizeGroup>, id: usize, obj: &EditableLabel) {
+        size_groups
+            .get(id)
+            .expect(&*format!("Cannot get size group {}", id))
+            .add_widget(obj);
+    }
 
-        // Get reference
-        let window = parent // prob ListItem
-            .expect("p1 not found")
-            .parent() // prob GtkBox
-            .expect("p2 not found")
-            .parent() // prob GtkBox
-            .expect("p2 not found")
-            .parent() // prob GtkBox
-            .expect("p2 not found")
-            .parent() // prob Scrollable Window
-            .expect("p3 not found")
-            .parent() // prob Another GtkBox
-            .expect("p4 not found")
-            .parent() // Finally a main Window
-            .expect("p5 not found");
-
-        // Cast to Window instance
-        window.downcast::<Window>().ok()
+    fn add_binding(
+        &self,
+        bindings: &mut RefMut<Vec<Binding>>,
+        laptop: &LaptopObject,
+        source_property: &str,
+        obj: &EditableLabel,
+    ) {
+        bindings.push(
+            laptop
+                .bind_property(source_property, obj, "text")
+                .bidirectional()
+                .sync_create()
+                .build(),
+        );
     }
 }

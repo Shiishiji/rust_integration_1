@@ -3,6 +3,7 @@
     <gresource prefix="/org/shiishiji/integration1/">
         <file compressed="true" preprocess="xml-stripblanks">window.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">laptop_row.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">laptop_list.ui</file>
         <file compressed="true">style.css</file>
     </gresource>
 </gresources>

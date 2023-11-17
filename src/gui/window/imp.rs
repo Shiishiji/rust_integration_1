@@ -1,57 +1,21 @@
+use crate::gui::laptop_list::LaptopList;
 use crate::gui::laptop_object::LaptopObject;
 use crate::storage::models::{Laptop, Laptops};
 use crate::storage::Storage;
-use adw::gio;
 use adw::glib::subclass::InitializingObject;
 use adw::prelude::*;
 use adw::subclass::prelude::ObjectSubclass;
 use adw::subclass::prelude::*;
 use gtk::{
     glib, template_callbacks, Button, CompositeTemplate, FileChooserAction, FileChooserDialog,
-    Label, ListView, ResponseType, SizeGroup,
+    Label, ResponseType,
 };
-use std::cell::RefCell;
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/shiishiji/integration1/window.ui")]
 pub struct Window {
     #[template_child]
-    pub manufacturer_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub screen_size_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub screen_resolution_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub screen_type_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub screen_touchscreen_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub processor_name_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub processor_physical_cores_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub processor_clock_speed_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub ram_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub disc_storage_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub disc_type_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub graphic_card_name_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub graphic_card_memory_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub os_header_label: TemplateChild<Label>,
-    #[template_child]
-    pub disc_reader_header_label: TemplateChild<Label>,
-
-    #[template_child]
-    pub list: TemplateChild<ListView>,
-    #[template_child]
-    pub list_header: TemplateChild<gtk::Box>,
-    pub laptops: RefCell<Option<gio::ListStore>>,
-    pub size_groups: RefCell<Vec<SizeGroup>>,
+    pub laptop_list: TemplateChild<LaptopList>,
 
     #[template_child]
     pub status_label: TemplateChild<Label>,
@@ -79,6 +43,9 @@ impl Window {
     fn handle_load_txt_data(&self, _button: &Button) {
         println!("Loading data from txt.");
         let laptops = self
+            .laptop_list
+            .get()
+            .imp()
             .laptops
             .borrow()
             .clone()
@@ -107,6 +74,9 @@ impl Window {
     fn handle_load_xml_data(&self, _button: &Button) {
         println!("Loading data from xml.");
         let laptops = self
+            .laptop_list
+            .get()
+            .imp()
             .laptops
             .borrow()
             .clone()
@@ -134,6 +104,9 @@ impl Window {
     async fn handle_load_db_data(&self, _: &Button) {
         println!("Loading data from database.");
         let laptops = self
+            .laptop_list
+            .get()
+            .imp()
             .laptops
             .borrow()
             .clone()
@@ -194,10 +167,13 @@ impl Window {
 
     fn get_laptops(&self) -> Vec<Laptop> {
         let laptops = self
+            .laptop_list
+            .get()
+            .imp()
             .laptops
             .clone()
             .into_inner()
-            .expect("Cannot get ListStore");
+            .expect("");
 
         let mut laptops_vec: Vec<Laptop> = vec![];
         for laptop_optional in laptops.into_iter() {
@@ -255,10 +231,7 @@ impl ObjectImpl for Window {
         self.parent_constructed();
 
         let obj = self.obj();
-        obj.setup_list();
-        obj.setup_size_groups();
         obj.setup_callbacks();
-        obj.setup_factory();
     }
 }
 

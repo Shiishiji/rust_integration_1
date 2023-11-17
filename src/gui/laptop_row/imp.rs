@@ -11,6 +11,8 @@ pub struct LaptopRow {
     // Vector holding the bindings to properties of `TaskObject`
     pub bindings: RefCell<Vec<Binding>>,
 
+    pub changed: bool,
+
     #[template_child]
     pub manufacturer_label: TemplateChild<EditableLabel>,
     #[template_child]
