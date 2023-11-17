@@ -4,58 +4,11 @@ box > box > label /* table header */
     border: 1px solid @borders;
     padding: 10px;
 }
-#manufacturer_label {
-    /*min-width: 10px;*/
+
+.duplicate {
+    background: #e23a3a;
 }
 
-#screen_size_label {
-    /*min-width: 10px;*/
-}
-
-#screen_type_label {
-    /*min-width: 10px;*/
-}
-
-#screen_touchscreen_label {
-    /*min-width: 10px;*/
-}
-
-#processor_name_label {
-    /*min-width: 10px;*/
-}
-
-#processor_physical_cores_label {
-    /*min-width: 10px;*/
-}
-
-#processor_clock_speed_label {
-    /*min-width: 10px;*/
-}
-
-#ram_label {
-    /*min-width: 10px;*/
-}
-
-#disc_storage_label {
-    /*min-width: 10px;*/
-}
-
-#disc_type_label {
-    /*min-width: 10px;*/
-}
-
-#graphic_card_name_label {
-    /*min-width: 10px;*/
-}
-
-#graphic_card_memory_label {
-    /*min-width: 10px;*/
-}
-
-#os_label {
-    /*min-width: 10px;*/
-}
-
-#disc_reader_label {
-    /*min-width: 10px;*/
+.changed {
+    background: lighter(gray);
 }

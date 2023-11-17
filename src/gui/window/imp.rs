@@ -59,7 +59,7 @@ impl Window {
 
             let mut i: i32 = 0;
             for laptop in laptops_from_csv.laptops {
-                let laptop_obj = LaptopObject::new(laptop);
+                let laptop_obj = LaptopObject::new(laptop, false, false);
 
                 laptops.append(&laptop_obj);
                 i += 1;
@@ -90,7 +90,7 @@ impl Window {
 
             let mut i: i32 = 0;
             for laptop in laptops_from_xml.laptops {
-                let laptop_obj = LaptopObject::new(laptop);
+                let laptop_obj = LaptopObject::new(laptop, false, false);
                 laptops.append(&laptop_obj);
                 i += 1;
             }
@@ -117,7 +117,7 @@ impl Window {
 
         let mut i: i32 = 0;
         for laptop in laptops_from_db.laptops {
-            let laptop_obj = LaptopObject::new(laptop);
+            let laptop_obj = LaptopObject::new(laptop, false, false);
             laptops.append(&laptop_obj);
             i += 1;
         }

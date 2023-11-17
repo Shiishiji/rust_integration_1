@@ -1,14 +1,13 @@
 mod imp;
 
 use crate::gui::laptop_list::LaptopList;
+use crate::gui::laptop_object::LaptopObject;
 use glib::Object;
 use gtk::glib::Binding;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{glib, EditableLabel, SizeGroup};
 use std::cell::RefMut;
-
-use crate::gui::laptop_object::LaptopObject;
 
 glib::wrapper! {
     pub struct LaptopRow(ObjectSubclass<imp::LaptopRow>)
@@ -27,7 +26,7 @@ impl LaptopRow {
         Object::builder().build()
     }
 
-    pub fn bind(&self, laptop_object: &LaptopObject) {
+    pub fn bind(&mut self, laptop_object: &LaptopObject) {
         let manufacturer_label = self.imp().manufacturer_label.get();
         let screen_size_label = self.imp().screen_size_label.get();
         let screen_resolution_label = self.imp().screen_resolution_label.get();
@@ -44,8 +43,8 @@ impl LaptopRow {
         let os_label = self.imp().os_label.get();
         let disc_reader_label = self.imp().disc_reader_label.get();
 
+        // Size groups
         {
-            // Size groups
             let size_groups = self
                 .parent()
                 .expect("Cannot reference parent: expected ListItem")
@@ -82,8 +81,8 @@ impl LaptopRow {
             }
         }
 
+        // Bindings
         {
-            // Bindings
             let mut bindings = self.imp().bindings.borrow_mut();
             for i in 0..15 {
                 match i {
@@ -170,6 +169,139 @@ impl LaptopRow {
                     _ => {}
                 }
             }
+        }
+
+        // Handle coloring of changed elements
+        {
+            let closure_set_changed = |laptop_object: &LaptopObject, old, new| {
+                laptop_object.set_changed(!(old == new));
+            };
+
+            let initial_manufacturer = laptop_object.manufacturer().clone();
+            let initial_screen_size = laptop_object.screen_size().clone();
+            let initial_screen_resolution = laptop_object.screen_resolution().clone();
+            let initial_screen_type = laptop_object.screen_type().clone();
+            let initial_screen_touchscreen = laptop_object.screen_touchscreen().clone();
+            let initial_processor_name = laptop_object.processor_name().clone();
+            let initial_processor_physical_cores = laptop_object.processor_physical_cores().clone();
+            let initial_processor_clock_speed = laptop_object.processor_clock_speed().clone();
+            let initial_ram = laptop_object.ram().clone();
+            let initial_disc_storage = laptop_object.disc_storage().clone();
+            let initial_disc_type = laptop_object.disc_type().clone();
+            let initial_graphic_card_name = laptop_object.graphic_card_name().clone();
+            let initial_graphic_card_memory = laptop_object.graphic_card_memory().clone();
+            let initial_os = laptop_object.os().clone();
+            let initial_disc_reader = laptop_object.disc_reader().clone();
+
+            laptop_object.connect_manufacturer_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_manufacturer.clone(),
+                    laptop_object.manufacturer(),
+                );
+            });
+            laptop_object.connect_screen_size_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_screen_size.clone(),
+                    laptop_object.screen_size(),
+                );
+            });
+            laptop_object.connect_screen_resolution_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_screen_resolution.clone(),
+                    laptop_object.screen_resolution(),
+                );
+            });
+            laptop_object.connect_screen_type_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_screen_type.clone(),
+                    laptop_object.screen_type(),
+                );
+            });
+            laptop_object.connect_screen_touchscreen_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_screen_touchscreen.clone(),
+                    laptop_object.screen_touchscreen(),
+                );
+            });
+            laptop_object.connect_processor_name_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_processor_name.clone(),
+                    laptop_object.processor_name(),
+                );
+            });
+            laptop_object.connect_processor_physical_cores_notify(
+                move |laptop_object: &LaptopObject| {
+                    closure_set_changed(
+                        laptop_object,
+                        initial_processor_physical_cores.clone(),
+                        laptop_object.processor_physical_cores(),
+                    );
+                },
+            );
+            laptop_object.connect_processor_clock_speed_notify(
+                move |laptop_object: &LaptopObject| {
+                    closure_set_changed(
+                        laptop_object,
+                        initial_processor_clock_speed.clone(),
+                        laptop_object.processor_clock_speed(),
+                    );
+                },
+            );
+            laptop_object.connect_ram_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(laptop_object, initial_ram.clone(), laptop_object.ram());
+            });
+            laptop_object.connect_disc_storage_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_disc_storage.clone(),
+                    laptop_object.disc_storage(),
+                );
+            });
+            laptop_object.connect_disc_type_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_disc_type.clone(),
+                    laptop_object.disc_type(),
+                );
+            });
+            laptop_object.connect_graphic_card_name_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_graphic_card_name.clone(),
+                    laptop_object.graphic_card_name(),
+                );
+            });
+            laptop_object.connect_graphic_card_memory_notify(
+                move |laptop_object: &LaptopObject| {
+                    closure_set_changed(
+                        laptop_object,
+                        initial_graphic_card_memory.clone(),
+                        laptop_object.graphic_card_memory(),
+                    );
+                },
+            );
+            laptop_object.connect_os_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(laptop_object, initial_os.clone(), laptop_object.os());
+            });
+            laptop_object.connect_disc_reader_notify(move |laptop_object: &LaptopObject| {
+                closure_set_changed(
+                    laptop_object,
+                    initial_disc_reader.clone(),
+                    laptop_object.disc_reader(),
+                );
+            });
+
+            let obj = self.clone();
+            laptop_object.connect_changed_notify(move |laptop_object: &LaptopObject| {
+                println!("Row modified");
+                obj.imp().mark_changed(laptop_object.changed());
+            });
         }
     }
 

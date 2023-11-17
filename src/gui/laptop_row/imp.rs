@@ -1,17 +1,21 @@
 use std::cell::RefCell;
 
 use glib::Binding;
+use gtk::glib::Properties;
+use gtk::prelude::{ObjectExt, WidgetExt};
 use gtk::subclass::prelude::*;
 use gtk::{glib, CompositeTemplate, EditableLabel};
 
 // Object holding the state
-#[derive(Default, CompositeTemplate)]
+#[derive(Default, CompositeTemplate, Properties)]
 #[template(resource = "/org/shiishiji/integration1/laptop_row.ui")]
+#[properties(wrapper_type = super::LaptopRow)]
 pub struct LaptopRow {
     // Vector holding the bindings to properties of `TaskObject`
     pub bindings: RefCell<Vec<Binding>>,
 
-    pub changed: bool,
+    #[property(name = "changed", get, set)]
+    pub changed: RefCell<bool>,
 
     #[template_child]
     pub manufacturer_label: TemplateChild<EditableLabel>,
@@ -63,6 +67,7 @@ impl ObjectSubclass for LaptopRow {
 }
 
 // Trait shared by all GObjects
+#[glib::derived_properties]
 impl ObjectImpl for LaptopRow {}
 
 // Trait shared by all widgets
@@ -70,3 +75,25 @@ impl WidgetImpl for LaptopRow {}
 
 // Trait shared by all boxes
 impl BoxImpl for LaptopRow {}
+
+impl LaptopRow {
+    pub fn mark_duplicate(&self, duplicate: bool) {
+        let obj = self.obj();
+
+        if duplicate {
+            obj.add_css_class("duplicate");
+        } else {
+            obj.remove_css_class("duplicate")
+        }
+    }
+
+    pub fn mark_changed(&self, changed: bool) {
+        let obj = self.obj();
+
+        if changed {
+            obj.add_css_class("changed");
+        } else {
+            obj.remove_css_class("changed")
+        }
+    }
+}

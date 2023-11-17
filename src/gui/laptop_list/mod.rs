@@ -126,7 +126,7 @@ impl LaptopList {
                 .and_downcast::<LaptopObject>()
                 .expect("Needs to be a LaptopObject");
 
-            let row = item
+            let mut row = item
                 .downcast_ref::<ListItem>()
                 .expect("Needs to be ListItem")
                 .child()

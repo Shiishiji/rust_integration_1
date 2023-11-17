@@ -9,6 +9,11 @@ use gtk::glib;
 #[derive(Properties, Default)]
 #[properties(wrapper_type = super::LaptopObject)]
 pub struct LaptopObject {
+    #[property(name = "changed", get, set)]
+    changed: RefCell<bool>,
+    #[property(name = "duplicate", get, set)]
+    duplicate: RefCell<bool>,
+
     #[property(name = "manufacturer", get, set)]
     manufacturer: RefCell<String>,
     #[property(name = "screen-size", get, set)]
