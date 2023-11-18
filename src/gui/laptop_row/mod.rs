@@ -303,6 +303,15 @@ impl LaptopRow {
                 obj.imp().mark_changed(laptop_object.changed());
             });
         }
+
+        // Handle duplicates
+        {
+            let obj = self.clone();
+            obj.imp().mark_duplicate(laptop_object.duplicate());
+            laptop_object.connect_duplicate_notify(move |laptop_object: &LaptopObject| {
+                obj.imp().mark_duplicate(laptop_object.duplicate());
+            });
+        }
     }
 
     pub fn unbind(&self) {

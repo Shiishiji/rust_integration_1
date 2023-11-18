@@ -9,7 +9,7 @@ glib::wrapper! {
 }
 
 impl LaptopObject {
-    pub fn new(laptop: Laptop, is_duplicate: bool, is_changed: bool) -> Self {
+    pub fn new(laptop: Laptop, is_duplicate: bool) -> Self {
         let empty_default = Laptop::with_empty_strings();
 
         let screen = match laptop.screen.is_some() {
@@ -34,7 +34,7 @@ impl LaptopObject {
 
         Object::builder()
             .property("duplicate", is_duplicate)
-            .property("changed", is_changed)
+            .property("changed", false)
             .property(
                 "manufacturer",
                 laptop.manufacturer.clone().unwrap_or(String::new()),

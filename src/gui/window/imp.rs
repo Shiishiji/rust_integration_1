@@ -1,6 +1,7 @@
 use crate::gui::laptop_list::LaptopList;
 use crate::gui::laptop_object::LaptopObject;
 use crate::storage::models::{Laptop, Laptops};
+use crate::storage::traits::duplicate_aware::DuplicateAware;
 use crate::storage::Storage;
 use adw::glib::subclass::InitializingObject;
 use adw::prelude::*;
@@ -52,20 +53,31 @@ impl Window {
             .expect("Couldn't get reference to laptops");
 
         let status = self.status_label.get();
+        let laptops_data = self.get_laptops();
 
         self.get_filename_and_perform_action(FileChooserAction::Open, move |filename| {
             let storage = Storage::new();
             let laptops_from_csv = storage.load_from_txt(filename);
 
+            let mut number_of_duplicates = 0u32;
+
             let mut i: i32 = 0;
             for laptop in laptops_from_csv.laptops {
-                let laptop_obj = LaptopObject::new(laptop, false, false);
+                let is_duplicate = laptops_data.is_duplicate(&laptop.clone());
+                if is_duplicate {
+                    number_of_duplicates += 1;
+                }
+
+                let laptop_obj = LaptopObject::new(laptop, is_duplicate);
 
                 laptops.append(&laptop_obj);
                 i += 1;
             }
 
-            status.set_label(&*format!("Wczytano {} rekordów.", i));
+            status.set_label(&*format!(
+                "Wczytano {} rekordów. Znaleziono {} duplikatów.",
+                i, number_of_duplicates
+            ));
             println!("Loaded {} records.", i);
         });
     }
@@ -83,19 +95,30 @@ impl Window {
             .expect("Couldn't get reference to laptops");
 
         let status = self.status_label.get();
+        let laptops_data = self.get_laptops();
 
         self.get_filename_and_perform_action(FileChooserAction::Open, move |filename: &str| {
             let storage = Storage::new();
             let laptops_from_xml = storage.load_from_xml(filename);
 
+            let mut number_of_duplicates = 0u32;
+
             let mut i: i32 = 0;
             for laptop in laptops_from_xml.laptops {
-                let laptop_obj = LaptopObject::new(laptop, false, false);
+                let is_duplicate = laptops_data.is_duplicate(&laptop.clone());
+                if is_duplicate {
+                    number_of_duplicates += 1;
+                }
+
+                let laptop_obj = LaptopObject::new(laptop, is_duplicate);
                 laptops.append(&laptop_obj);
                 i += 1;
             }
 
-            status.set_label(&*format!("Wczytano {} rekordów.", i));
+            status.set_label(&*format!(
+                "Wczytano {} rekordów. Znaleziono {} duplikatów.",
+                i, number_of_duplicates
+            ));
             println!("Loaded {} records.", i);
         });
     }
@@ -117,7 +140,8 @@ impl Window {
 
         let mut i: i32 = 0;
         for laptop in laptops_from_db.laptops {
-            let laptop_obj = LaptopObject::new(laptop, false, false);
+            let laptop_obj = LaptopObject::new(laptop, false);
+
             laptops.append(&laptop_obj);
             i += 1;
         }
